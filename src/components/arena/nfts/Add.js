@@ -7,7 +7,6 @@ const AddNfts = ({ save, address }) => {
   const [name, setName] = useState("");
   const [ipfsImage, setIpfsImage] = useState("");
   const [description, setDescription] = useState("");
-  const [attributes, setAttributes] = useState([]);
   const [show, setShow] = useState(false);
 
   const isFormFilled = () => name && ipfsImage && description;
@@ -15,7 +14,6 @@ const AddNfts = ({ save, address }) => {
   // close the popup modal
   const handleClose = () => {
     setShow(false);
-    setAttributes([]);
   };
 
   // display the popup modal
@@ -98,7 +96,6 @@ const AddNfts = ({ save, address }) => {
                 ipfsImage,
                 description,
                 ownerAddress: address,
-                attributes,
               });
               handleClose();
             }}

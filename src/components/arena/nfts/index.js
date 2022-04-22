@@ -11,10 +11,13 @@ import {
   createNft,
   fetchNftContractOwner,
   getAllNfts,
+  getMyNfts,
 } from "../../../utils/arena";
 import { Row } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
-const NftList = ({ arenaContract, name }) => {
+const NftList = ({ arenaContract, name, ownNfts }) => {
+  const navigate = useNavigate();
   const { performActions, address } = useContractKit();
   const [nfts, setNfts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -23,32 +26,26 @@ const NftList = ({ arenaContract, name }) => {
   const getAssets = useCallback(async () => {
     try {
       setLoading(true);
-      const allNfts = [
-        {
-          index: 0,
-          name: "Square",
-          description: "Simple square",
-          image:
-            "https://ipfs.infura.io/ipfs/QmPS6iT9q1QwJT1NXMBcBKAPgFCiQqPzKq5SWqbTUFHnkF",
-          owner: "0xF8B83E424e3194ABA851a2F3edE9Ca88CFf1eDB4",
-        },
-      ];
-      // const allNfts = await getAllNfts(arenaContract);
-      // if (!allNfts) return;
+
+      const allNfts = ownNfts
+        ? await getMyNfts(arenaContract, address)
+        : await getAllNfts(arenaContract);
+      if (!allNfts) return;
       setNfts(allNfts);
     } catch (error) {
       console.log({ error });
     } finally {
       setLoading(false);
     }
-  }, [arenaContract]);
+  }, [arenaContract, address]);
 
   const addNft = async (data) => {
     try {
       setLoading(true);
       await createNft(arenaContract, performActions, data);
       toast(<NotificationSuccess text="Updating NFT list...." />);
-      getAssets();
+      // getAssets();
+      navigate("/my-nfts");
     } catch (error) {
       console.log({ error });
       toast(<NotificationError text="Failed to create an NFT." />);
@@ -57,23 +54,15 @@ const NftList = ({ arenaContract, name }) => {
     }
   };
 
-  // const fetchContractOwner = useCallback(async (arenaContract) => {
-  //   // get the address that deployed the NFT contract
-  //   const _address = await fetchNftContractOwner(arenaContract);
-  //   setNftOwner(_address);
-  // }, []);
-
   useEffect(() => {
     try {
       if (address && arenaContract) {
         getAssets();
-        // fetchContractOwner(arenaContract);
       }
     } catch (error) {
       console.log({ error });
     }
   }, [arenaContract, address, getAssets]);
-  // }, [arenaContract, address, getAssets, fetchContractOwner]);
 
   if (address) {
     return (
@@ -94,6 +83,11 @@ const NftList = ({ arenaContract, name }) => {
                   }}
                 />
               ))}
+              {nfts.length === 0 ? (
+                <p className="w-100 text-center fw-light text-muted">
+                  No NFTs to display. Why don't you mint some?
+                </p>
+              ) : null}
             </Row>
           </>
         ) : (

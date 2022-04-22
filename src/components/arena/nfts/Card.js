@@ -5,7 +5,7 @@ import { truncateAddress } from "../../../utils";
 import Identicon from "../../ui/Identicon";
 
 const NftCard = ({ nft }) => {
-  const { image, description, owner, name, index } = nft;
+  const { image, description, owner, name, index, wins } = nft;
 
   return (
     <Col key={index}>
@@ -31,7 +31,7 @@ const NftCard = ({ nft }) => {
           <Card.Text className="flex-grow-1 text-muted">
             {description}
           </Card.Text>
-          <Card.Text className="flex-grow-1 fw-bold">Wins: {10}</Card.Text>
+          <Card.Text className="flex-grow-1 fw-bold">Wins: {wins}</Card.Text>
         </Card.Body>
       </Card>
     </Col>

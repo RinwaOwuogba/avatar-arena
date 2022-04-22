@@ -6,7 +6,7 @@ const client = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
 export const createNft = async (
   arenaContract,
   performActions,
-  { name, description, ipfsImage, ownerAddress, attributes }
+  { name, description, ipfsImage, ownerAddress }
 ) => {
   await performActions(async (kit) => {
     if (!name || !description || !ipfsImage) return;
@@ -18,7 +18,6 @@ export const createNft = async (
       description,
       image: ipfsImage,
       owner: defaultAccount,
-      attributes,
     });
 
     try {
@@ -53,27 +52,58 @@ export const uploadToIpfs = async (e) => {
   }
 };
 
+const getNft = (arenaContract, tokenId) =>
+  new Promise(async (resolve) => {
+    const tokenUri = await arenaContract.methods.tokenURI(tokenId).call();
+    const wins = await arenaContract.methods.getAvatarWins(tokenId).call();
+    const meta = await fetchNftMeta(tokenUri);
+    const owner = await fetchNftOwner(arenaContract, tokenId);
+    resolve({
+      index: tokenId,
+      owner,
+      wins,
+      name: meta.data.name,
+      image: meta.data.image,
+      description: meta.data.description,
+    });
+  });
+
 export const getAllNfts = async (arenaContract) => {
   try {
     const nfts = [];
     const nftsLength = await arenaContract.methods.totalSupply().call();
     for (let i = 0; i < Number(nftsLength); i++) {
-      const nft = new Promise(async (resolve) => {
-        const tokenUri = await arenaContract.methods.tokenURI(i).call();
-        const wins = await arenaContract.methods.getAvatarWins(i).call();
-        const meta = await fetchNftMeta(tokenUri);
-        const owner = await fetchNftOwner(arenaContract, i);
-        resolve({
-          index: i,
-          owner,
-          wins,
-          name: meta.data.name,
-          image: meta.data.image,
-          description: meta.data.description,
-        });
-      });
+      const nft = getNft(arenaContract, i);
       nfts.push(nft);
     }
+    return Promise.all(nfts);
+  } catch (e) {
+    console.log({ e });
+  }
+};
+
+export const getMyNfts = async (arenaContract, ownerAddress) => {
+  try {
+    const userTokensLength = await arenaContract.methods
+      .balanceOf(ownerAddress)
+      .call();
+
+    let userTokenIds = [];
+    for (let i = 0; i < Number(userTokensLength); i++) {
+      const tokenId = arenaContract.methods
+        .tokenOfOwnerByIndex(ownerAddress, i)
+        .call();
+      userTokenIds.push(tokenId);
+    }
+    userTokenIds = await Promise.all(userTokenIds);
+
+    const nfts = [];
+    userTokenIds.forEach((tokenId) => {
+      const nft = getNft(arenaContract, tokenId);
+
+      nfts.push(nft);
+    });
+
     return Promise.all(nfts);
   } catch (e) {
     console.log({ e });
