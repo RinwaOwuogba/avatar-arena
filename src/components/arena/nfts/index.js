@@ -7,13 +7,14 @@ import Nft from "./Card";
 import Loader from "../../ui/Loader";
 import { NotificationSuccess, NotificationError } from "../../ui/Notifications";
 import {
-  getNfts,
+  // getNfts,
   createNft,
   fetchNftContractOwner,
-} from "../../../utils/minter";
+  getAllNfts,
+} from "../../../utils/arena";
 import { Row } from "react-bootstrap";
 
-const NftList = ({ minterContract, name }) => {
+const NftList = ({ arenaContract, name }) => {
   const { performActions, address } = useContractKit();
   const [nfts, setNfts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -22,20 +23,30 @@ const NftList = ({ minterContract, name }) => {
   const getAssets = useCallback(async () => {
     try {
       setLoading(true);
-      const allNfts = await getNfts(minterContract);
-      if (!allNfts) return;
+      const allNfts = [
+        {
+          index: 0,
+          name: "Square",
+          description: "Simple square",
+          image:
+            "https://ipfs.infura.io/ipfs/QmPS6iT9q1QwJT1NXMBcBKAPgFCiQqPzKq5SWqbTUFHnkF",
+          owner: "0xF8B83E424e3194ABA851a2F3edE9Ca88CFf1eDB4",
+        },
+      ];
+      // const allNfts = await getAllNfts(arenaContract);
+      // if (!allNfts) return;
       setNfts(allNfts);
     } catch (error) {
       console.log({ error });
     } finally {
       setLoading(false);
     }
-  }, [minterContract]);
+  }, [arenaContract]);
 
   const addNft = async (data) => {
     try {
       setLoading(true);
-      await createNft(minterContract, performActions, data);
+      await createNft(arenaContract, performActions, data);
       toast(<NotificationSuccess text="Updating NFT list...." />);
       getAssets();
     } catch (error) {
@@ -46,22 +57,23 @@ const NftList = ({ minterContract, name }) => {
     }
   };
 
-  const fetchContractOwner = useCallback(async (minterContract) => {
-    // get the address that deployed the NFT contract
-    const _address = await fetchNftContractOwner(minterContract);
-    setNftOwner(_address);
-  }, []);
+  // const fetchContractOwner = useCallback(async (arenaContract) => {
+  //   // get the address that deployed the NFT contract
+  //   const _address = await fetchNftContractOwner(arenaContract);
+  //   setNftOwner(_address);
+  // }, []);
 
   useEffect(() => {
     try {
-      if (address && minterContract) {
+      if (address && arenaContract) {
         getAssets();
-        fetchContractOwner(minterContract);
+        // fetchContractOwner(arenaContract);
       }
     } catch (error) {
       console.log({ error });
     }
-  }, [minterContract, address, getAssets, fetchContractOwner]);
+  }, [arenaContract, address, getAssets]);
+  // }, [arenaContract, address, getAssets, fetchContractOwner]);
 
   if (address) {
     return (
@@ -69,10 +81,9 @@ const NftList = ({ minterContract, name }) => {
         {!loading ? (
           <>
             <div className="d-flex justify-content-between align-items-center mb-4">
-              <h1 className="fs-4 fw-bold mb-0">{name}</h1>
-              {nftOwner === address ? (
-                <AddNfts save={addNft} address={address} />
-              ) : null}
+              <h1 className="fs-5 fw-bold mb-0 text-muted">{name}</h1>
+
+              <AddNfts save={addNft} address={address} />
             </div>
             <Row xs={1} sm={2} lg={3} className="g-3  mb-5 g-xl-4 g-xxl-5">
               {nfts.map((_nft) => (
@@ -95,12 +106,12 @@ const NftList = ({ minterContract, name }) => {
 };
 
 NftList.propTypes = {
-  minterContract: PropTypes.instanceOf(Object),
+  arenaContract: PropTypes.instanceOf(Object),
   updateBalance: PropTypes.func.isRequired,
 };
 
 NftList.defaultProps = {
-  minterContract: null,
+  arenaContract: null,
 };
 
 export default NftList;

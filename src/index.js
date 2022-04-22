@@ -5,6 +5,7 @@ import {
   Alfajores,
   NetworkNames,
 } from "@celo-tools/use-contractkit";
+import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -28,7 +29,9 @@ ReactDOM.render(
         description: "A React Boilerplate for Celo Dapps",
       }}
     >
-      <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </ContractKitProvider>
   </React.StrictMode>,
   document.getElementById("root")

@@ -4,7 +4,7 @@ import axios from "axios";
 const client = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
 
 export const createNft = async (
-  minterContract,
+  arenaContract,
   performActions,
   { name, description, ipfsImage, ownerAddress, attributes }
 ) => {
@@ -29,7 +29,7 @@ export const createNft = async (
       const url = `https://ipfs.infura.io/ipfs/${added.path}`;
 
       // mint the NFT and save the IPFS url to the blockchain
-      let transaction = await minterContract.methods
+      let transaction = await arenaContract.methods
         .safeMint(ownerAddress, url)
         .send({ from: defaultAccount });
 
@@ -53,22 +53,23 @@ export const uploadToIpfs = async (e) => {
   }
 };
 
-export const getNfts = async (minterContract) => {
+export const getAllNfts = async (arenaContract) => {
   try {
     const nfts = [];
-    const nftsLength = await minterContract.methods.totalSupply().call();
+    const nftsLength = await arenaContract.methods.totalSupply().call();
     for (let i = 0; i < Number(nftsLength); i++) {
       const nft = new Promise(async (resolve) => {
-        const res = await minterContract.methods.tokenURI(i).call();
-        const meta = await fetchNftMeta(res);
-        const owner = await fetchNftOwner(minterContract, i);
+        const tokenUri = await arenaContract.methods.tokenURI(i).call();
+        const wins = await arenaContract.methods.getAvatarWins(i).call();
+        const meta = await fetchNftMeta(tokenUri);
+        const owner = await fetchNftOwner(arenaContract, i);
         resolve({
           index: i,
           owner,
+          wins,
           name: meta.data.name,
           image: meta.data.image,
           description: meta.data.description,
-          attributes: meta.data.attributes,
         });
       });
       nfts.push(nft);
@@ -89,17 +90,17 @@ export const fetchNftMeta = async (ipfsUrl) => {
   }
 };
 
-export const fetchNftOwner = async (minterContract, index) => {
+export const fetchNftOwner = async (arenaContract, index) => {
   try {
-    return await minterContract.methods.ownerOf(index).call();
+    return await arenaContract.methods.ownerOf(index).call();
   } catch (e) {
     console.log({ e });
   }
 };
 
-export const fetchNftContractOwner = async (minterContract) => {
+export const fetchNftContractOwner = async (arenaContract) => {
   try {
-    let owner = await minterContract.methods.owner().call();
+    let owner = await arenaContract.methods.owner().call();
     return owner;
   } catch (e) {
     console.log({ e });
