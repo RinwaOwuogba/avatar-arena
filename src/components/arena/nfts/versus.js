@@ -28,7 +28,9 @@ const Versus = ({ nft1, nft2 }) => {
             }}
           />
         ) : (
-          <div className="bg-dark bg-gradient h-100"></div>
+          <div className="bg-dark bg-gradient h-100 d-flex justify-content-center align-items-center text-white fs-1">
+            ??
+          </div>
         )}
       </Col>
     </Row>
