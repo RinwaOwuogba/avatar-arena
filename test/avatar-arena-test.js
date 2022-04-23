@@ -77,11 +77,11 @@ describe("AvatarArena", function () {
       expect(wins_1).to.eq(0);
       expect(wins_2).to.eq(0);
 
-      const battleId = 0;
+      const firstBattleId = 1;
       await avatarArena.connect(owner).startBattle(tokenID_1);
       await expect(avatarArena.connect(acc1).startBattle(tokenID_2))
         .to.emit(avatarArena, "BattleComplete")
-        .withArgs(battleId);
+        .withArgs(firstBattleId);
 
       const battle = await avatarArena.connect(acc1).getBattle();
 

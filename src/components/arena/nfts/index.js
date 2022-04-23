@@ -79,7 +79,7 @@ const NftList = ({ arenaContract, name, ownNfts }) => {
                 />
               ))}
               {nfts.length === 0 ? (
-                <p className="w-100 text-center fw-light text-muted">
+                <p className="w-100 text-center fw-bold fs-6 text-muted">
                   No NFTs to display. Why don't you mint some?
                 </p>
               ) : null}

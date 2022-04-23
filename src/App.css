@@ -40,3 +40,7 @@
 .battleContainer {
   max-width: 800px !important;
 }
+
+.questionMark {
+  font-size: 200px;
+}

@@ -26,7 +26,7 @@ abstract contract Arena is ERC721 {
     mapping(uint256 => uint256) private _avatarWins;
 
     constructor() {
-        // initialize battles with default battle
+        // initialize battles list with placeholder battle
         _battles.push();
     }
 
@@ -109,7 +109,6 @@ contract AvatarArena is
     ERC721,
     ERC721Enumerable,
     ERC721URIStorage,
-    ERC721Burnable,
     Ownable,
     Arena
 {
