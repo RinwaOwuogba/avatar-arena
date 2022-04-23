@@ -16,6 +16,9 @@ describe("AvatarArena", function () {
     [owner, acc1, acc2] = await ethers.getSigners();
 
     avatarArena = await AvatarArena.deploy();
+
+    // const AvatarArena = await ethers.getContractFactory("AvatarArena");
+    // avatarArena = await AvatarArena.attach("0x65A3306DE520E499fB8D3b85602E9474662D565E");
   });
 
   it("should set the right owner", async function () {
@@ -100,6 +103,26 @@ describe("AvatarArena", function () {
       await expect(
         avatarArena.connect(owner).startBattle(tokenID_1)
       ).to.be.revertedWith("Arena: Cannot start battle with non-owned token");
+    });
+
+    it("should get an empty battle if sender doesn't have a battle", async () => {
+      const battle = await avatarArena.connect(owner).getBattle();
+
+      expect(battle.players).to.have.length(0);
+    });
+
+    it("should fail to start another battle while in a pending battle", async () => {
+      await mintNFT(avatarArena, owner, owner.address);
+
+      const tokenId = 0;
+      const trx = await avatarArena.connect(owner).startBattle(tokenId);
+      await trx.wait();
+
+      await expect(
+        avatarArena.connect(owner).startBattle(tokenId)
+      ).to.be.revertedWith(
+        "Arena: Cannot start another battle while in a battle"
+      );
     });
   });
 });

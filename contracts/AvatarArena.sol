@@ -25,7 +25,10 @@ abstract contract Arena is ERC721 {
     mapping(address => uint256) private _userBattles;
     mapping(uint256 => uint256) private _avatarWins;
 
-    constructor() {}
+    constructor() {
+        // initialize battles with default battle
+        _battles.push();
+    }
 
     /**
     Creates a new battle for the sender or adds sender
@@ -37,9 +40,17 @@ abstract contract Arena is ERC721 {
             "Arena: Cannot start battle with non-owned token"
         );
 
-        if (_battles.length > 0) {
+        if (_battles.length > 1) {
             uint256 currentBattleIndex = _battles.length - 1;
             Battle storage currentBattle = _battles[currentBattleIndex];
+
+            // do nothing if sender is already in a pending battle
+            if (
+                currentBattle.players.length == 1 &&
+                currentBattle.players[0].player == msg.sender
+            ) {
+                revert("Arena: Cannot start another battle while in a battle");
+            }
 
             // try to join an existing battle
             if (currentBattle.players.length == 1) {
