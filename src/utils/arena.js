@@ -69,6 +69,11 @@ export const fetchNft = (arenaContract, tokenId) =>
     });
   });
 
+export const isTokenIdValid = async (arenaContract, tokenId) => {
+  const nftsLength = await arenaContract.methods.totalSupply().call();
+  return tokenId <= nftsLength - 1;
+};
+
 export const getAllNfts = async (arenaContract) => {
   try {
     const nfts = [];
@@ -139,12 +144,11 @@ export const fetchNftContractOwner = async (arenaContract) => {
 };
 
 export const fetchLatestBattle = async (arenaContract) => {
-  try {
-    let battle = await arenaContract.methods.getBattle().call();
-    return battle;
-  } catch (e) {
-    console.log({ e });
-  }
+  let battle = await arenaContract.methods.getBattle().call();
+
+  if (battle.players.length == 0) return null;
+
+  return await formatBattleData(arenaContract, battle);
 };
 
 const getWinnerAddress = (battle) => {
@@ -155,22 +159,31 @@ const getWinnerAddress = (battle) => {
   if (winner === 0 || winner === 1) return battle.players[winner].player;
 };
 
-export const startBattle = async (arenaContract, tokenId) => {
-  try {
-    let battle = await arenaContract.methods.startBattle().call();
+const formatBattleData = async (arenaContract, battle) => {
+  const formattedBattle = {
+    players: [{}, {}],
+    createdAt: "",
+    winner: "",
+  };
 
-    if (battle) {
-      battle.createdAt = new Date(battle.createdAt * 1000);
-      [battle.players[0].nft, battle.players[1].nft] = await Promise.all([
-        fetchNft(arenaContract, battle.players[0].nft),
-        fetchNft(arenaContract, battle.players[1].nft),
-      ]);
+  formattedBattle.createdAt = new Date(battle.createdAt * 1000);
+  [formattedBattle.players[0].nft, formattedBattle.players[1].nft] =
+    await Promise.all([
+      fetchNft(arenaContract, battle.players[0].nft),
+      battle.players[1] ? fetchNft(arenaContract, battle.players[1].nft) : null,
+    ]);
 
-      battle.winner = getWinnerAddress(battle);
-    }
+  formattedBattle.winner = getWinnerAddress(battle);
 
-    return battle;
-  } catch (e) {
-    console.log({ e });
-  }
+  return formattedBattle;
+};
+
+export const startBattle = async (arenaContract, performActions, tokenId) => {
+  await performActions(async (kit) => {
+    const { defaultAccount } = kit;
+
+    await arenaContract.methods
+      .startBattle(tokenId)
+      .send({ from: defaultAccount });
+  });
 };

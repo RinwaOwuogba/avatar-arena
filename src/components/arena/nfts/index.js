@@ -6,14 +6,7 @@ import AddNfts from "./Add";
 import Nft from "./Card";
 import Loader from "../../ui/Loader";
 import { NotificationSuccess, NotificationError } from "../../ui/Notifications";
-import {
-  // getNfts,
-  createNft,
-  fetchNftContractOwner,
-  fetchNftOwner,
-  getAllNfts,
-  getMyNfts,
-} from "../../../utils/arena";
+import { createNft, getAllNfts, getMyNfts } from "../../../utils/arena";
 import { Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
@@ -22,7 +15,6 @@ const NftList = ({ arenaContract, name, ownNfts }) => {
   const { performActions, address } = useContractKit();
   const [nfts, setNfts] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [nftOwner, setNftOwner] = useState(null);
 
   const getAssets = useCallback(async () => {
     try {
