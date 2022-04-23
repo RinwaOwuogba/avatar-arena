@@ -3,33 +3,16 @@ import { Button, Col, Container, Row } from "react-bootstrap";
 import { useContractKit } from "@celo-tools/use-contractkit";
 import { useArenaContract } from "../hooks";
 import Header from "../components/header";
-import { toast } from "react-toastify";
 import Loader from "../components/ui/Loader";
-import {
-  NotificationSuccess,
-  NotificationError,
-} from "../components/ui/Notifications";
-import {
-  fetchLatestBattle,
-  fetchNft,
-  isTokenIdValid,
-  startBattle,
-} from "../utils/arena";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { fetchLatestBattle } from "../utils/arena";
+import { Link } from "react-router-dom";
 import Versus from "../components/arena/nfts/versus";
-import "./arena.css";
 
-const Arena = () => {
-  const location = useLocation();
-  const { performActions, address } = useContractKit();
+const BattleResult = () => {
   const arenaContract = useArenaContract();
-
+  const { address } = useContractKit();
   const [loading, setLoading] = useState(false);
   const [battle, setBattle] = useState(null);
-  const [selectedNft, setSelectedNft] = useState(null);
-
-  const params = new URLSearchParams(location.search);
-  const tokenId = params.get("tokenId");
 
   //   const [selectedNft, setSelectedNft] = useState({
   //     index: "0",
@@ -46,39 +29,12 @@ const Arena = () => {
       setLoading(true);
       const latestBattle = await fetchLatestBattle(arenaContract);
       setBattle(latestBattle);
-
-      if (tokenId) {
-        const validId = await isTokenIdValid(arenaContract, tokenId);
-
-        if (validId) {
-          const nft = await fetchNft(arenaContract, tokenId);
-          setSelectedNft(nft);
-        } else {
-          return toast(<NotificationError text="Invalid avatar ID." />);
-        }
-      } else {
-        setSelectedNft(null);
-      }
     } catch (error) {
       console.log({ error });
     } finally {
       setLoading(false);
     }
-  }, [arenaContract, address, tokenId]);
-
-  const newBattle = async () => {
-    try {
-      setLoading(true);
-      await startBattle(arenaContract, performActions, selectedNft.index);
-      toast(<NotificationSuccess text="Fetching latest battle.." />);
-      getAssets();
-    } catch (error) {
-      console.log({ error });
-      toast(<NotificationError text="Failed to start battle." />);
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [arenaContract, address]);
 
   useEffect(() => {
     try {
@@ -88,26 +44,9 @@ const Arena = () => {
     } catch (error) {
       console.log({ error });
     }
-  }, [arenaContract, address, getAssets, tokenId]);
+  }, [arenaContract, address, getAssets]);
 
   if (!address) return null;
-
-  const sections = {
-    existingBattle: "existingBattle",
-    newBattle: "newBattle",
-  };
-
-  const getBattleToRender = (battle, selectedNft) => {
-    if (battle && !battle.winner) return sections.existingBattle;
-
-    if (battle && battle.winner && !selectedNft) return sections.existingBattle;
-
-    if (battle && battle.winner && selectedNft) return sections.newBattle;
-
-    if (selectedNft) return sections.newBattle;
-
-    return "";
-  };
 
   return (
     <Container fluid="md">
@@ -121,8 +60,7 @@ const Arena = () => {
             </div>
 
             <Container className="bg-light p-3 mb-5 battleContainer">
-              {getBattleToRender(battle, selectedNft) ==
-              sections.existingBattle ? (
+              {battle ? (
                 <>
                   <Versus
                     nft1={battle.players[0].nft}
@@ -147,40 +85,8 @@ const Arena = () => {
                       </p>
                     )}
                   </Row>
-
-                  {battle.winner ? (
-                    <Row className="mt-4">
-                      <Col className="d-flex justify-content-center">
-                        <Link to="/my-nfts">
-                          <Button variant="outline-danger" className="px-5">
-                            Choose avatar for new battle
-                          </Button>
-                        </Link>
-                      </Col>
-                    </Row>
-                  ) : null}
                 </>
-              ) : null}
-
-              {getBattleToRender(battle, selectedNft) == sections.newBattle ? (
-                <>
-                  <Versus nft1={selectedNft} />
-
-                  <Row className="mt-4">
-                    <Col className="d-flex justify-content-center">
-                      <Button
-                        onClick={newBattle}
-                        variant="outline-danger"
-                        className="px-5"
-                      >
-                        Start battle
-                      </Button>
-                    </Col>
-                  </Row>
-                </>
-              ) : null}
-
-              {getBattleToRender(battle, selectedNft) == "" ? (
+              ) : (
                 <>
                   <Row>
                     <p className="text-center py-3 text-muted fw-bold">
@@ -198,7 +104,7 @@ const Arena = () => {
                     </Col>
                   </Row>
                 </>
-              ) : null}
+              )}
             </Container>
           </>
         ) : (
@@ -209,7 +115,7 @@ const Arena = () => {
   );
 };
 
-export default Arena;
+export default BattleResult;
 
 {
   /* <Row className="mt-5">

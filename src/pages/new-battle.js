@@ -9,34 +9,25 @@ import {
   NotificationSuccess,
   NotificationError,
 } from "../components/ui/Notifications";
-import {
-  fetchLatestBattle,
-  fetchNft,
-  isTokenIdValid,
-  startBattle,
-} from "../utils/arena";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { fetchNft, isTokenIdValid, startBattle } from "../utils/arena";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Versus from "../components/arena/nfts/versus";
-import "./arena.css";
 
 const NewBattle = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
   const { performActions, address } = useContractKit();
   const arenaContract = useArenaContract();
 
   const [loading, setLoading] = useState(false);
-  const [battle, setBattle] = useState(null);
   const [selectedNft, setSelectedNft] = useState(null);
 
+  const navigate = useNavigate();
+  const location = useLocation();
   const params = new URLSearchParams(location.search);
   const tokenId = params.get("tokenId");
 
   const getAssets = useCallback(async () => {
     try {
       setLoading(true);
-      const latestBattle = await fetchLatestBattle(arenaContract);
-      setBattle(latestBattle);
 
       if (tokenId) {
         const validId = await isTokenIdValid(arenaContract, tokenId);
@@ -117,7 +108,7 @@ const NewBattle = () => {
 
               {!selectedNft ? (
                 <>
-                  <Row className="mt-4">
+                  <Row>
                     <Col className="d-flex justify-content-center">
                       <Link to="/my-nfts">
                         <Button variant="outline-danger" className="px-5">

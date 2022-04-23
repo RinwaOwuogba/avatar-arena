@@ -35,7 +35,7 @@ const NftCard = ({ nft, isOwner }) => {
           <Card.Text className="flex-grow-1 fw-bold">Wins: {wins}</Card.Text>
 
           {isOwner ? (
-            <Link to={`/arena?tokenId=${index}`}>
+            <Link to={`/new-battle?tokenId=${index}`}>
               <Button variant="outline-danger">Battle with Avatar</Button>
             </Link>
           ) : null}

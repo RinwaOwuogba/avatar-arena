@@ -7,7 +7,9 @@ import { Notification } from "./components/ui/Notifications";
 import coverImg from "./assets/img/nft_geo_cover.png";
 import AllNfts from "./pages/all-nfts";
 import MyNfts from "./pages/my-nfts";
-import Arena from "./pages/arena";
+import Arena from "./pages/battle-result";
+import NewBattle from "./pages/new-battle";
+import BattleResult from "./pages/battle-result";
 
 const App = function AppWrapper() {
   const { address, connect } = useContractKit();
@@ -17,7 +19,8 @@ const App = function AppWrapper() {
       <Notification />
       {address ? (
         <Routes>
-          <Route path="/arena" element={<Arena />} />
+          <Route path="/battle-result" element={<BattleResult />} />
+          <Route path="/new-battle" element={<NewBattle />} />
           <Route path="/my-nfts" element={<MyNfts />} />
           <Route path="/all-nfts" element={<AllNfts />} />
           <Route path="*" element={<MyNfts />} />
