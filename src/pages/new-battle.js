@@ -9,7 +9,12 @@ import {
   NotificationSuccess,
   NotificationError,
 } from "../components/ui/Notifications";
-import { fetchNft, isTokenIdValid, startBattle } from "../utils/arena";
+import {
+  fetchLatestBattle,
+  fetchNft,
+  isTokenIdValid,
+  startBattle,
+} from "../utils/arena";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Versus from "../components/arena/nfts/versus";
 
@@ -51,6 +56,12 @@ const NewBattle = () => {
   const newBattle = async () => {
     try {
       setLoading(true);
+      const latestBattle = await fetchLatestBattle(arenaContract);
+      if (latestBattle && !latestBattle.winner)
+        return toast(
+          <NotificationError text="Cannot start a new battle until current battle is completed." />
+        );
+
       await startBattle(arenaContract, performActions, selectedNft.index);
       toast(<NotificationSuccess text="Fetching battle results.." />);
       setTimeout(() => {
