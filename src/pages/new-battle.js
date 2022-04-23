@@ -51,7 +51,7 @@ const NewBattle = () => {
     } finally {
       setLoading(false);
     }
-  }, [arenaContract, address, tokenId]);
+  }, [arenaContract, tokenId]);
 
   const newBattle = async () => {
     try {

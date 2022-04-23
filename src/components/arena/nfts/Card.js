@@ -5,7 +5,7 @@ import { truncateAddress } from "../../../utils";
 import Identicon from "../../ui/Identicon";
 import { Link } from "react-router-dom";
 
-const NftCard = ({ nft, isOwner }) => {
+const NftCard = ({ nft, isOwner, showBattle }) => {
   const { image, description, owner, name, index, wins } = nft;
 
   return (
@@ -34,7 +34,7 @@ const NftCard = ({ nft, isOwner }) => {
           </Card.Text>
           <Card.Text className="flex-grow-1 fw-bold">Wins: {wins}</Card.Text>
 
-          {isOwner ? (
+          {showBattle && isOwner ? (
             <Link to={`/new-battle?tokenId=${index}`}>
               <Button variant="outline-danger">Battle with Avatar</Button>
             </Link>
@@ -48,6 +48,7 @@ const NftCard = ({ nft, isOwner }) => {
 NftCard.propTypes = {
   // props passed into this component
   nft: PropTypes.instanceOf(Object).isRequired,
+  isOwner: PropTypes.bool,
 };
 
 export default NftCard;

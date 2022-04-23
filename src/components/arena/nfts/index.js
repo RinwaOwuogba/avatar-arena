@@ -30,7 +30,7 @@ const NftList = ({ arenaContract, name, ownNfts }) => {
     } finally {
       setLoading(false);
     }
-  }, [arenaContract, address]);
+  }, [arenaContract, address, ownNfts]);
 
   const addNft = async (data) => {
     try {
@@ -74,6 +74,7 @@ const NftList = ({ arenaContract, name, ownNfts }) => {
                   nft={{
                     ..._nft,
                   }}
+                  showBattle={ownNfts}
                   isOwner={address === _nft.owner}
                 />
               ))}

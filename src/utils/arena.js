@@ -146,7 +146,7 @@ export const fetchNftContractOwner = async (arenaContract) => {
 export const fetchLatestBattle = async (arenaContract) => {
   let battle = await arenaContract.methods.getBattle().call();
 
-  if (battle.players.length == 0) return null;
+  if (battle.players.length === 0) return null;
 
   return await formatBattleData(arenaContract, battle);
 };

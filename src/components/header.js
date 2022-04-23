@@ -23,25 +23,25 @@ const Header = () => {
 
       <Navbar.Collapse className="justify-content-end">
         <Nav className="justify-content-end">
-          <Nav.Item className="d-flex align-items-center mb-2 mb-lg-0">
+          <Nav.Item className="d-flex align-items-center mb-2 mb-lg-0 me-lg-4">
             <Link to="/battle-result" className="text-dark">
               View Battle result
             </Link>
           </Nav.Item>
 
-          <Nav.Item className="d-flex align-items-center mb-2 mb-lg-0">
+          <Nav.Item className="d-flex align-items-center mb-2 mb-lg-0 me-lg-4">
             <Link to="/new-battle" className="text-dark">
               New battle
             </Link>
           </Nav.Item>
 
-          <Nav.Item className="d-flex align-items-center mb-2 mb-lg-0">
+          <Nav.Item className="d-flex align-items-center mb-2 mb-lg-0 me-lg-4">
             <Link to="/all-nfts" className="text-dark">
               All NFTs
             </Link>
           </Nav.Item>
 
-          <Nav.Item className="d-flex align-items-center mb-2 mb-lg-0">
+          <Nav.Item className="d-flex align-items-center mb-2 mb-lg-0 me-lg-4">
             <Link to="/my-nfts" className="text-dark">
               My NFTs
             </Link>

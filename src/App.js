@@ -7,7 +7,6 @@ import { Notification } from "./components/ui/Notifications";
 import coverImg from "./assets/img/nft_geo_cover.png";
 import AllNfts from "./pages/all-nfts";
 import MyNfts from "./pages/my-nfts";
-import Arena from "./pages/battle-result";
 import NewBattle from "./pages/new-battle";
 import BattleResult from "./pages/battle-result";
 

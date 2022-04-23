@@ -14,16 +14,6 @@ const BattleResult = () => {
   const [loading, setLoading] = useState(false);
   const [battle, setBattle] = useState(null);
 
-  //   const [selectedNft, setSelectedNft] = useState({
-  //     index: "0",
-  //     owner: "0xF8B83E424e3194ABA851a2F3edE9Ca88CFf1eDB4",
-  //     wins: "0",
-  //     name: "Test",
-  //     image:
-  //       "https://ipfs.infura.io/ipfs/QmX5umgYsTJWGuFLRW2M34yjzTuofYyy32bdvx2orFvo8t",
-  //     description: "NFT Prima",
-  //   });
-
   const getAssets = useCallback(async () => {
     try {
       setLoading(true);
@@ -34,7 +24,7 @@ const BattleResult = () => {
     } finally {
       setLoading(false);
     }
-  }, [arenaContract, address]);
+  }, [arenaContract]);
 
   useEffect(() => {
     try {
@@ -116,46 +106,3 @@ const BattleResult = () => {
 };
 
 export default BattleResult;
-
-{
-  /* <Row className="mt-5">
-                        <Col className="d-flex justify-content-center">
-                          <Link to="/my-nfts">
-                            <Button variant="outline-danger" className="px-5">
-                              Choose avatar for new battle
-                            </Button>
-                          </Link>
-                        </Col>
-                      </Row> */
-}
-{
-  /* <Row>
-                        <Col xs={5}>
-                          <Nft
-                            key={battle.players[0].nft.index}
-                            nft={{
-                              ...battle.players[0].nft,
-                            }}
-                          />
-                        </Col>
-                        <Col
-                          xs={2}
-                          className="d-flex align-items-center justify-content-center fw-bold text-uppercase fs-4"
-                        >
-                          vs
-                        </Col>
-                        <Col xs={5}>
-                          {battle.players[1].nft.indexbattle.players[1].nft ? (
-                            <Nft
-                              key={battle.players[1].nft.index}
-                              nft={{
-                                ...battle.players[1].nft.indexbattle.players[1]
-                                  .nft,
-                              }}
-                            />
-                          ) : (
-                            <div className="bg-dark bg-gradient h-100"></div>
-                          )}
-                        </Col>
-                      </Row> */
-}
