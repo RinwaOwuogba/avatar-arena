@@ -16,9 +16,6 @@ describe("AvatarArena", function () {
     [owner, acc1, acc2] = await ethers.getSigners();
 
     avatarArena = await AvatarArena.deploy();
-
-    // const AvatarArena = await ethers.getContractFactory("AvatarArena");
-    // avatarArena = await AvatarArena.attach("0x65A3306DE520E499fB8D3b85602E9474662D565E");
   });
 
   it("should set the right owner", async function () {
