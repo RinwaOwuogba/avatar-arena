@@ -21,14 +21,14 @@ const Header = () => {
         </Nav.Item>
 
         <Nav.Item className="d-flex align-items-center me-4">
-          <Link to="/my-nfts" className="text-dark">
-            My NFTs
+          <Link to="/all-nfts" className="text-dark">
+            All NFTs
           </Link>
         </Nav.Item>
 
         <Nav.Item className="d-flex align-items-center me-4">
-          <Link to="/all-nfts" className="text-dark">
-            All NFTs
+          <Link to="/my-nfts" className="text-dark">
+            My NFTs
           </Link>
         </Nav.Item>
 

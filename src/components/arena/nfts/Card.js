@@ -1,10 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Card, Col, Badge, Stack } from "react-bootstrap";
+import { Card, Col, Badge, Stack, Button } from "react-bootstrap";
 import { truncateAddress } from "../../../utils";
 import Identicon from "../../ui/Identicon";
+import { Link } from "react-router-dom";
 
-const NftCard = ({ nft }) => {
+const NftCard = ({ nft, isOwner }) => {
   const { image, description, owner, name, index, wins } = nft;
 
   return (
@@ -32,6 +33,12 @@ const NftCard = ({ nft }) => {
             {description}
           </Card.Text>
           <Card.Text className="flex-grow-1 fw-bold">Wins: {wins}</Card.Text>
+
+          {isOwner ? (
+            <Link to={`/arena?tokenId=${index}`}>
+              <Button variant="outline-danger">Battle with Avatar</Button>
+            </Link>
+          ) : null}
         </Card.Body>
       </Card>
     </Col>

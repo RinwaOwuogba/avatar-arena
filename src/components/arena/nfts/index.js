@@ -10,6 +10,7 @@ import {
   // getNfts,
   createNft,
   fetchNftContractOwner,
+  fetchNftOwner,
   getAllNfts,
   getMyNfts,
 } from "../../../utils/arena";
@@ -44,7 +45,7 @@ const NftList = ({ arenaContract, name, ownNfts }) => {
       setLoading(true);
       await createNft(arenaContract, performActions, data);
       toast(<NotificationSuccess text="Updating NFT list...." />);
-      // getAssets();
+      getAssets();
       navigate("/my-nfts");
     } catch (error) {
       console.log({ error });
@@ -74,13 +75,14 @@ const NftList = ({ arenaContract, name, ownNfts }) => {
 
               <AddNfts save={addNft} address={address} />
             </div>
-            <Row xs={1} sm={2} lg={3} className="g-3  mb-5 g-xl-4 g-xxl-5">
+            <Row xs={1} sm={2} lg={3} className="g-3 mb-5 g-xl-4 g-xxl-5">
               {nfts.map((_nft) => (
                 <Nft
                   key={_nft.index}
                   nft={{
                     ..._nft,
                   }}
+                  isOwner={address === _nft.owner}
                 />
               ))}
               {nfts.length === 0 ? (

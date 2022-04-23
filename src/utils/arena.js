@@ -1,5 +1,6 @@
 import { create as ipfsHttpClient } from "ipfs-http-client";
 import axios from "axios";
+import { BigNumber } from "ethers";
 
 const client = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
 
@@ -52,7 +53,7 @@ export const uploadToIpfs = async (e) => {
   }
 };
 
-const getNft = (arenaContract, tokenId) =>
+export const fetchNft = (arenaContract, tokenId) =>
   new Promise(async (resolve) => {
     const tokenUri = await arenaContract.methods.tokenURI(tokenId).call();
     const wins = await arenaContract.methods.getAvatarWins(tokenId).call();
@@ -73,7 +74,7 @@ export const getAllNfts = async (arenaContract) => {
     const nfts = [];
     const nftsLength = await arenaContract.methods.totalSupply().call();
     for (let i = 0; i < Number(nftsLength); i++) {
-      const nft = getNft(arenaContract, i);
+      const nft = fetchNft(arenaContract, i);
       nfts.push(nft);
     }
     return Promise.all(nfts);
@@ -99,7 +100,7 @@ export const getMyNfts = async (arenaContract, ownerAddress) => {
 
     const nfts = [];
     userTokenIds.forEach((tokenId) => {
-      const nft = getNft(arenaContract, tokenId);
+      const nft = fetchNft(arenaContract, tokenId);
 
       nfts.push(nft);
     });
@@ -132,6 +133,43 @@ export const fetchNftContractOwner = async (arenaContract) => {
   try {
     let owner = await arenaContract.methods.owner().call();
     return owner;
+  } catch (e) {
+    console.log({ e });
+  }
+};
+
+export const fetchLatestBattle = async (arenaContract) => {
+  try {
+    let battle = await arenaContract.methods.getBattle().call();
+    return battle;
+  } catch (e) {
+    console.log({ e });
+  }
+};
+
+const getWinnerAddress = (battle) => {
+  const winner = BigNumber.from(battle.winner).toNumber();
+
+  if (winner === -1) return "";
+
+  if (winner === 0 || winner === 1) return battle.players[winner].player;
+};
+
+export const startBattle = async (arenaContract, tokenId) => {
+  try {
+    let battle = await arenaContract.methods.startBattle().call();
+
+    if (battle) {
+      battle.createdAt = new Date(battle.createdAt * 1000);
+      [battle.players[0].nft, battle.players[1].nft] = await Promise.all([
+        fetchNft(arenaContract, battle.players[0].nft),
+        fetchNft(arenaContract, battle.players[1].nft),
+      ]);
+
+      battle.winner = getWinnerAddress(battle);
+    }
+
+    return battle;
   } catch (e) {
     console.log({ e });
   }
