@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/avatar-arena/static/css/main.b07ff406.chunk.css",
+    "main.js": "/avatar-arena/static/js/main.0173e3d3.chunk.js",
+    "main.js.map": "/avatar-arena/static/js/main.0173e3d3.chunk.js.map",
+    "runtime-main.js": "/avatar-arena/static/js/runtime-main.ffc3be12.js",
+    "runtime-main.js.map": "/avatar-arena/static/js/runtime-main.ffc3be12.js.map",
+    "static/css/2.7b7f1bcc.chunk.css": "/avatar-arena/static/css/2.7b7f1bcc.chunk.css",
+    "static/js/2.02ab82b5.chunk.js": "/avatar-arena/static/js/2.02ab82b5.chunk.js",
+    "static/js/2.02ab82b5.chunk.js.map": "/avatar-arena/static/js/2.02ab82b5.chunk.js.map",
+    "static/js/3.ca301300.chunk.js": "/avatar-arena/static/js/3.ca301300.chunk.js",
+    "static/js/3.ca301300.chunk.js.map": "/avatar-arena/static/js/3.ca301300.chunk.js.map",
+    "index.html": "/avatar-arena/index.html",
+    "static/css/2.7b7f1bcc.chunk.css.map": "/avatar-arena/static/css/2.7b7f1bcc.chunk.css.map",
+    "static/css/main.b07ff406.chunk.css.map": "/avatar-arena/static/css/main.b07ff406.chunk.css.map",
+    "static/js/2.02ab82b5.chunk.js.LICENSE.txt": "/avatar-arena/static/js/2.02ab82b5.chunk.js.LICENSE.txt",
+    "static/media/bootstrap-icons.css": "/avatar-arena/static/media/bootstrap-icons.c1d7432e.woff"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.ffc3be12.js",
+    "static/css/2.7b7f1bcc.chunk.css",
+    "static/js/2.02ab82b5.chunk.js",
+    "static/css/main.b07ff406.chunk.css",
+    "static/js/main.0173e3d3.chunk.js"
+  ]
+}
