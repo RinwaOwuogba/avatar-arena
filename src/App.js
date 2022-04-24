@@ -4,7 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import Cover from "./components/arena/Cover";
 import "./App.css";
 import { Notification } from "./components/ui/Notifications";
-import coverImg from "./assets/img/nft_geo_cover.png";
+import coverImg from "./assets/img/arena-battle.png";
 import AllNfts from "./pages/all-nfts";
 import MyNfts from "./pages/my-nfts";
 import NewBattle from "./pages/new-battle";
@@ -25,7 +25,7 @@ const App = function AppWrapper() {
           <Route path="*" element={<MyNfts />} />
         </Routes>
       ) : (
-        <Cover name="GEO Collection" coverImg={coverImg} connect={connect} />
+        <Cover name="Avatar Arena" coverImg={coverImg} connect={connect} />
       )}
     </>
   );
