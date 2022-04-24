@@ -25,7 +25,7 @@ ReactDOM.render(
         chainId: 44787,
       }}
       dapp={{
-        name: "Avartar Arena",
+        name: "Avatar Arena",
         description: "An NFT battle ground",
       }}
     >

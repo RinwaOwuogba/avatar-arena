@@ -1,86 +1,69 @@
-# Celo React Boilerplate
-This repository contains a simple React boilerplate for Celo projects.
+# **Avatar Arena**
 
-## 1. Tech Stack
-This boilerplate uses the following tech stack:
-- [React](https://reactjs.org/) - A JavaScript library for building user interfaces.
-- [use-Contractkit](contractkit
-) - A frontend library for interacting with the Celo blockchain.
-- [Hardhat](https://hardhat.org/) - A tool for writing and deploying smart contracts.
-- [Bootstrap](https://getbootstrap.com/) - A CSS framework that provides responsive, mobile-first layouts.
+## **Description**
 
-## 2. Quick Start
+This is a simple NFT-based game Dapp. It's features include:
 
-To get this project up running locally, follow these simple steps:
+- Mint NFTs to use as battle avatars.
+- Allow users list all NFT avatars on the Dapp.
+- Allow users list all NFTs avatar they owns on the Dapp.
+- Battle avatars you control against other users' NFT avatars. Avatars have equal probability of winning, it's a game of chance.
 
-### 2.1 Clone the repository:
+## **Live Demo**
 
-```bash
-git clone https://github.com/dacadeorg/celo-react-boilerplate.git
+[Avatar Arena Dapp](https://rinwaowuogba.github.io/avatar-arena)
+
+## **Usage**
+
+### **Requirements**
+
+1. Install the [CeloExtensionWallet](https://chrome.google.com/webstore/detail/celoextensionwallet/kkilomkmpmkbdnfelcpgckmpcaemjcdh?hl=en) from the Google Chrome Store.
+2. Create a wallet and create two accounts in it.
+3. Go to [https://celo.org/developers/faucet](https://celo.org/developers/faucet) and get tokens for the alfajores testnet.
+4. Switch to the alfajores testnet in the CeloExtensionWallet.
+
+## **Project Setup**
+
+### Install
+
 ```
-
-### 2.2 Navigate to the directory:
-
-```bash
-cd celo-react-boilerplate
-```
-
-### 2.3 Install the dependencies:
-
-```bash
+cd avatar-arena
 npm install
 ```
 
-### 2.4 Run the dapp:
+### Start
 
-```bash
+```
+cd avatar-arena
 npm start
 ```
 
-To properly test the dapp you will need to have a Celo wallet with testnet tokens.
-This learning module [NFT Contract Development with Hardhat](https://hackmd.io/exuZTH2hTqKytn2vxgDmcg) will walk you through the process of creating a Metamask wallet and claiming Alfajores testnet tokens.
+### Build
 
-The boilerplate should behave like this:
-![](https://raw.githubusercontent.com/dacadeorg/celo-development-201/main/content/gifs/boilerplate_demo.gif)
-
-## 3. Smart-Contract Deployment
-
-You can use your own smart contract that the dapp will interact with by following the steps below:
-
-### 3.1 Add a new smart contract
-Update the contracts/MyContract.sol file with your solidity code. 
-
-Notice that if you change the contract and file name you will also need to update the deploy script that we will use later.
-
-### 3.2 Compile the smart contract
-
-```bash
-npx hardhat compile
+```
+npm run build
 ```
 
-### 3.3 Run tests on smart contract
+### **Test**
 
-```bash
+#### **Automated Contract Tests**
+
+```
+cd avatar-arena
 npx hardhat test
 ```
 
-### 3.4 Update env file
+#### **Manual Testing**
 
-- Create a file in the root directory called ".env"
-- Create a key called MNEMONIC and paste in your mnemonic key. e.g
+1. Open different browser tabs.
+2. Mint NFTs with the different accounts on the Celo blockchain (in the Alfajores testnet) in the different tabs.
+3. Click the battle button on any NFT you own in the first tab.
+4. Click the start battle button on the new page you'll be redirected to.
+5. Once the battle has been started successfully on the first tab, repeat steps 3 and 4 on the second tab (with the second account).
+6. The battle result is displayed on the second tab and the win count on the NFT avatars change accordingly.
+7. To see the result on the first tab, the user has to manually navigate to the battle result page.
 
-```js
-MNEMONIC = "...";
-```
+## **Some Possible Improvements**
 
-In this case, we are using a mnemonic from an account created on Metamask. You can copy it from your Metamask account settings. An account created on the Celo extension wallet will not work.
-
-You can find more details about the whole process in the Dacade [NFT Contract Development with Hardhat](https://hackmd.io/exuZTH2hTqKytn2vxgDmcg) learning module. It will also show you how to get testnet tokens for your account so you can deploy your smart contract in the next step.
-
-### 3.5 Deploy the smart contract to the Celo testnet Aljafores
-
-```bash
-npx hardhat run --network alfajores scripts/deploy.js
-```
-
-This command will update the src/contract files with the deployed smart contract ABI and contract address.
+- A way to make influence the winning chances of an avatar by their battle history e.g total previous wins, etc.
+- A list of previous battle results could be shown. Currently the Dapp only returns the last battle result.

@@ -16,7 +16,7 @@ const Header = () => {
       className="p-3 mb-5 rounded-bottom rounded-3"
     >
       <Navbar.Brand>
-        <h4 className="fw-bold">AvatarArena</h4>
+        <h4 className="fw-bold">Avatar Arena</h4>
       </Navbar.Brand>
 
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
