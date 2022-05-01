@@ -29,11 +29,10 @@ export const createNft = async (
       const url = `https://ipfs.infura.io/ipfs/${added.path}`;
 
       // mint the NFT and save the IPFS url to the blockchain
-      let transaction = await arenaContract.methods
+      return await arenaContract.methods
         .safeMint(ownerAddress, url)
         .send({ from: defaultAccount });
 
-      return transaction;
     } catch (error) {
       console.log("Error uploading file: ", error);
     }
@@ -119,8 +118,8 @@ export const getMyNfts = async (arenaContract, ownerAddress) => {
 export const fetchNftMeta = async (ipfsUrl) => {
   try {
     if (!ipfsUrl) return null;
-    const meta = await axios.get(ipfsUrl);
-    return meta;
+    return  await axios.get(ipfsUrl);
+
   } catch (e) {
     console.log({ e });
   }
@@ -136,8 +135,8 @@ export const fetchNftOwner = async (arenaContract, index) => {
 
 export const fetchNftContractOwner = async (arenaContract) => {
   try {
-    let owner = await arenaContract.methods.owner().call();
-    return owner;
+    return await arenaContract.methods.owner().call();
+
   } catch (e) {
     console.log({ e });
   }
